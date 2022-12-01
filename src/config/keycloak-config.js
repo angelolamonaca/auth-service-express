@@ -6,7 +6,7 @@ let _keycloak;
 const keycloakConfig = {
     clientId: 'login-app',
     bearerOnly: true,
-    serverUrl: 'http://localhost:8080/auth',
+    serverUrl: 'http://localhost:8080',
     realm: 'AnteHub',
     realmPublicKey: process.env.REALM_PUBLIC_KEY
 };

@@ -3,8 +3,10 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const app = express();
+app.use(cors())
 
 /**
  * Create Keycloak Middleware
@@ -14,6 +16,7 @@ app.use(keycloak.middleware());
 
 const indexRouter = require('./routes');
 const authRouter = require('./routes/auth');
+const heroesRouter = require('./routes/heroes');
 
 
 // view engine setup
@@ -28,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/v1/heroes', heroesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -6,7 +6,7 @@ volumes:
 
 services:
   postgres:
-    image: postgres
+    image: postgres:15.1
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
@@ -18,7 +18,7 @@ services:
     expose:
       - 5432
   keycloak:
-    image: quay.io/keycloak/keycloak:legacy
+    image: quay.io/keycloak/keycloak:20.0.1
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -26,11 +26,12 @@ services:
       DB_USER: keycloak
       DB_SCHEMA: public
       DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
     ports:
       - "8080:8080"
-    expose:
-      - 8080
+    command: start-dev
     depends_on:
       - postgres
