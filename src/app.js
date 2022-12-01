@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -14,39 +13,22 @@ app.use(cors())
 const keycloak = require('./config/keycloak-config.js').initKeycloak();
 app.use(keycloak.middleware());
 
-const indexRouter = require('./routes');
-const authRouter = require('./routes/auth');
-const heroesRouter = require('./routes/heroes');
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+const walletRouter = require('./routes/v1/wallet');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/auth', authRouter);
-app.use('/v1/heroes', heroesRouter);
+app.use('/v1/wallet', walletRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.get('*', (req, res) => {
+    res.sendStatus(404);
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.sendStatus(500);
+})
 
 module.exports = app;
