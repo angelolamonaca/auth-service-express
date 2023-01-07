@@ -135,7 +135,7 @@ router.put('/:fileId', keycloak.protect('realm:user'), (req, res) => {
     author: userId
   }
 
-  res.status(StatusCodes.CREATED).send(file);
+  res.status(StatusCodes.OK).send(file);
 })
 
 /**
