@@ -13,14 +13,14 @@ app.use(cors())
 const keycloak = require('./config/keycloak-config.js').initKeycloak();
 app.use(keycloak.middleware());
 
-const walletRouter = require('./routes/v1/wallet');
+const fileRouter = require('./routes/v1/file');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use('/v1/wallet', walletRouter);
+app.use('/v1/file', fileRouter);
 
 app.get('*', (req, res) => {
     res.sendStatus(404);
